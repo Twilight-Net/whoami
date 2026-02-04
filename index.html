@@ -2,938 +2,901 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TWILIGHT v2.0 - About Me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TWILIGHT | Digital Existence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff0055;
+            --deep-space: #050508;
+        }
+
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: #0a0a0a;
-            color: #fff;
-            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--deep-space);
+            color: #e0e0e0;
             overflow-x: hidden;
+            cursor: crosshair;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Matrix-style code rain background */
-        .matrix-bg {
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+        .font-glitch { font-family: 'Syncopate', sans-serif; }
+
+        /* Scanline Effect */
+        .scanlines {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 50;
             pointer-events: none;
-            overflow: hidden;
+            opacity: 0.3;
         }
 
-        .code-stream {
+        /* Glitch Effect */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-text {
+            position: relative;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
             position: absolute;
-            top: -100%;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            color: #0f0;
-            text-shadow: 0 0 8px #0f0;
-            white-space: nowrap;
-            animation: fall linear infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes fall {
-            0% {
-                top: -100%;
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                top: 100%;
-                opacity: 0;
-            }
-        }
-
-        /* Binary particles */
-        .particles {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            pointer-events: none;
         }
-
-        .particle {
-            position: absolute;
-            font-family: 'Courier New', monospace;
-            color: rgba(102, 126, 234, 0.4);
-            font-size: 12px;
-            animation: float-binary 20s infinite;
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
         }
-
-        @keyframes float-binary {
-            0%, 100% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-150vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Glitch effect for header */
-        @keyframes glitch {
-            0% {
-                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
-            }
-            25% {
-                text-shadow: -2px 2px #ff00ff, 2px -2px #00ffff;
-            }
-            50% {
-                text-shadow: 2px -2px #ff00ff, -2px 2px #00ffff;
-            }
-            75% {
-                text-shadow: -2px -2px #ff00ff, 2px 2px #00ffff;
-            }
-            100% {
-                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
-            }
-        }
-
-        .header {
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .lang-switch {
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: flex;
-            gap: 10px;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #667eea;
-            color: #fff;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .lang-btn:hover {
-            background: rgba(102, 126, 234, 0.3);
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .lang-btn.active {
-            background: #667eea;
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
-        }
-
-        h1 {
-            color: #ffd700;
-            font-size: 4em;
-            margin: 20px 0;
-            animation: glitch 3s infinite;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-
-        .version {
-            color: #667eea;
-            font-size: 1.2em;
-            letter-spacing: 3px;
-        }
-
-        /* Profile Photo Slideshow with 3D interactive effects */
-        .profile-section {
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .profile-container {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            margin: 30px auto;
-            perspective: 1500px;
-            cursor: pointer;
-        }
-
-        .profile-slideshow {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-        }
-
-        .profile-slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out, transform 0.3s ease;
-            border-radius: 20px;
-            overflow: hidden;
-            transform-style: preserve-3d;
-        }
-
-        .profile-slide.active {
-            opacity: 1;
-        }
-
-        .profile-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            border: 3px solid #667eea;
-            box-shadow: 0 0 50px rgba(102, 126, 234, 0.6),
-                        0 0 100px rgba(118, 75, 162, 0.4),
-                        inset 0 0 50px rgba(102, 126, 234, 0.2);
-            animation: pulse-border 2s infinite;
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .profile-container:hover .profile-slide img {
-            transform: scale(1.05);
-            filter: brightness(1.2) saturate(1.2);
-        }
-
-        @keyframes pulse-border {
-            0%, 100% {
-                box-shadow: 0 0 50px rgba(102, 126, 234, 0.6),
-                            0 0 100px rgba(118, 75, 162, 0.4),
-                            inset 0 0 50px rgba(102, 126, 234, 0.2);
-            }
-            50% {
-                box-shadow: 0 0 70px rgba(102, 126, 234, 0.8),
-                            0 0 120px rgba(118, 75, 162, 0.6),
-                            inset 0 0 70px rgba(102, 126, 234, 0.3);
-            }
-        }
-
-        /* Hologram scan effect */
-        .profile-slide::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(transparent, rgba(102, 126, 234, 0.3), transparent);
-            animation: scan 3s infinite;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        @keyframes scan {
-            0% {
-                top: -100%;
-            }
-            50% {
-                top: 100%;
-            }
-            100% {
-                top: -100%;
-            }
-        }
-
-        /* Orbit rings around profile */
-        .orbit-ring {
-            position: absolute;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
-        .orbit-ring:nth-child(1) {
-            width: 420px;
-            height: 420px;
-            top: -10px;
-            left: -10px;
-        }
-
-        .orbit-ring:nth-child(2) {
-            width: 450px;
-            height: 450px;
-            top: -25px;
-            left: -25px;
-            animation-duration: 15s;
-            animation-direction: reverse;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Slide indicators */
-        .slide-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .indicator.active {
-            background: #667eea;
-            box-shadow: 0 0 10px #667eea;
-            transform: scale(1.3);
-        }
-
-        /* Content cards with neon effect */
-        .content-card {
-            background: rgba(10, 10, 10, 0.8);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
+        
+        .glitch-text::after {
             left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
-            border-radius: 15px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-            background-size: 200% 200%;
-            animation: gradient-shift 3s ease infinite;
+            text-shadow: -2px 0 var(--neon-blue);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
 
-        .content-card:hover::before {
-            opacity: 0.5;
+        @keyframes glitch-anim {
+            0% { clip: rect(12px, 9999px, 52px, 0); }
+            20% { clip: rect(65px, 9999px, 11px, 0); }
+            40% { clip: rect(26px, 9999px, 89px, 0); }
+            60% { clip: rect(92px, 9999px, 15px, 0); }
+            80% { clip: rect(34px, 9999px, 67px, 0); }
+            100% { clip: rect(18px, 9999px, 42px, 0); }
         }
 
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 99px, 0); }
+            20% { clip: rect(12px, 9999px, 34px, 0); }
+            40% { clip: rect(89px, 9999px, 12px, 0); }
+            60% { clip: rect(23px, 9999px, 78px, 0); }
+            80% { clip: rect(56px, 9999px, 23px, 0); }
+            100% { clip: rect(34px, 9999px, 91px, 0); }
         }
 
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            10% { transform: skew(-2deg); }
+            20% { transform: skew(2deg); }
+            30% { transform: skew(0deg); }
+            100% { transform: skew(0deg); }
         }
 
-        p {
-            line-height: 1.8;
-            margin: 15px 0;
-            font-size: 1.1em;
-            text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-        }
-
-        h2 {
-            color: #ff6b6b;
-            margin: 20px 0 10px;
-            font-size: 2em;
-            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-        }
-
-        /* Hobby cards with 3D effect */
-        .hobby-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 30px 0;
-        }
-
-        .hobby-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.5s;
-            border: 2px solid rgba(102, 126, 234, 0.2);
+        /* Holographic Profile Card */
+        .holo-card {
             position: relative;
-            overflow: hidden;
-        }
-
-        .hobby-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: all 0.5s;
-        }
-
-        .hobby-card:hover::after {
-            left: 100%;
-        }
-
-        .hobby-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5);
-            border-color: #667eea;
-        }
-
-        .hobby-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            filter: brightness(0.8);
-            transition: all 0.3s;
-        }
-
-        .hobby-card:hover img {
-            filter: brightness(1.1);
-            transform: scale(1.05);
-        }
-
-        /* Easter egg with matrix effect */
-        .easter-egg {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 107, 0.1));
-            border: 2px solid #ffd700;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 30px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .easter-egg::before {
-            content: '< EASTER EGG >';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0a0a0a;
-            padding: 5px 20px;
-            font-size: 0.8em;
-            color: #ffd700;
-            border: 2px solid #ffd700;
+            width: 280px;
+            height: 280px;
             border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
         }
 
-        /* Audio section with visualizer effect */
-        .audio-section {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-        }
-
-        .audio-player {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-        }
-
-        audio {
-            width: 100%;
-            margin-top: 10px;
-            filter: hue-rotate(200deg);
-        }
-
-        .highlight {
-            color: #ffd700;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            animation: glow 2s infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
-            }
-        }
-
-        .footer {
-            text-align: center;
-            margin: 50px 0 30px;
-        }
-
-        .footer img {
-            max-width: 300px;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-            
-            .profile-container {
-                width: 300px;
-                height: 300px;
-            }
-            
-            .orbit-ring:nth-child(1) {
+        @media (min-width: 768px) {
+            .holo-card {
                 width: 320px;
                 height: 320px;
             }
-            
-            .orbit-ring:nth-child(2) {
-                width: 350px;
-                height: 350px;
-            }
-            
-            .lang-switch {
-                position: relative;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
         }
 
-        /* Scroll reveal animation */
-        .reveal {
+        .holo-card:hover {
+            transform: rotateY(5deg) rotateX(5deg) scale(1.02);
+            box-shadow: 0 0 80px rgba(188, 19, 254, 0.4);
+        }
+
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg, transparent 0%, rgba(0, 243, 255, 0.3) 30%, transparent 30%, transparent 70%, rgba(188, 19, 254, 0.3) 70%, transparent 100%);
+            background-size: 200% 200%;
+            animation: holo-shine 3s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        @keyframes holo-shine {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+
+        .holo-content {
+            position: absolute;
+            inset: 2px;
+            background: #0a0a0f;
+            border-radius: 18px;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .holo-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.1) brightness(1.1);
+            transition: transform 0.5s ease;
+        }
+
+        /* Profile Dots Navigation */
+        .profile-dots {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            z-index: 20;
+        }
+
+        .profile-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-dot.active {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+            transform: scale(1.2);
+        }
+
+        .profile-dot:hover {
+            background: rgba(0, 243, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* Glass Cards */
+        .tilt-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tilt-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 243, 255, 0.1);
+            border-color: rgba(0, 243, 255, 0.3);
+        }
+
+        /* Audio Visualizer */
+        .visualizer-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 30px;
+        }
+
+        .viz-bar {
+            width: 3px;
+            background: linear-gradient(to top, var(--neon-blue), var(--neon-purple));
+            border-radius: 2px;
+            animation: viz-dance 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes viz-dance {
+            0% { height: 5px; }
+            100% { height: 25px; }
+        }
+
+        /* Easter Egg Modal */
+        .batman-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.6s ease;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            padding: 20px;
         }
 
-        .reveal.active {
+        .batman-modal.active {
             opacity: 1;
-            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .batman-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            animation: batman-pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .batman-text {
+                font-size: 4rem;
+                letter-spacing: 0.5em;
+            }
+        }
+
+        @keyframes batman-pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Typewriter Effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--neon-blue);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        @media (max-width: 640px) {
+            .typewriter {
+                white-space: normal;
+                border-right: none;
+                animation: fadeIn 1s ease-in;
+            }
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-blue); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Floating Elements */
+        .float-anim {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 3px; }
+
+        /* Language Toggle */
+        .lang-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .lang-switch:active {
+            transform: scale(0.95);
+        }
+
+        .lang-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
+            box-shadow: 0 2px 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .lang-switch.hindi .lang-slider {
+            transform: translateX(30px);
+            background: var(--neon-purple);
+            box-shadow: 0 2px 10px rgba(188, 19, 254, 0.3);
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Touch feedback */
+        .touch-feedback:active {
+            transform: scale(0.98);
+            opacity: 0.8;
+        }
+
+        /* Image loading placeholder */
+        .img-loading {
+            background: linear-gradient(90deg, #1a1a2e 25%, #16213e 50%, #1a1a2e 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
-<body>
-    <!-- Matrix code rain background -->
-    <div class="matrix-bg" id="matrixBg"></div>
-    
-    <!-- Binary particles background -->
-    <div class="particles" id="particles"></div>
+<body class="selection:bg-cyan-500 selection:text-black">
 
-    <div class="container">
-        <div class="header">
-            <div class="lang-switch">
-                <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
-                <button class="lang-btn" onclick="switchLanguage('hi')">हिंदी</button>
+    <!-- Effects Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-4 md:px-6 py-4 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-white/10">
+        <div class="text-xl md:text-2xl font-cyber font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 glitch-wrapper">
+            <span class="glitch-text" data-text="TWILIGHT">TWILIGHT</span>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 uppercase tracking-widest hidden md:block" data-key="lang_label">Language</span>
+            <div class="lang-switch touch-feedback" onclick="toggleLanguage()" id="langSwitch">
+                <div class="lang-slider" id="langSlider">EN</div>
             </div>
-            <h1>TWILIGHT</h1>
-            <div class="version">[ v2.0 ]</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Holographic Profile -->
+    <header class="min-h-screen flex flex-col items-center justify-center relative px-4 pt-20 pb-10 overflow-hidden">
+        
+        <!-- Background Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-cyan-500/20 rounded-full blur-[100px] animate-pulse"></div>
+        
+        <!-- Main Holographic Card -->
+        <div class="relative z-10 mb-6 float-anim">
+            <div class="holo-card touch-feedback" id="mainProfile" onclick="nextProfile()">
+                <div class="holo-content">
+                    <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg" 
+                         alt="Twilight Main" 
+                         id="profileImage"
+                         class="img-loading"
+                         onload="this.classList.remove('img-loading')">
+                </div>
+            </div>
+            
+            <!-- Decorative Rings -->
+            <div class="absolute -inset-4 border border-cyan-500/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+            <div class="absolute -inset-8 border border-purple-500/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
         </div>
 
-        <div id="content">
-            <!-- English Content -->
-            <div id="en-content">
-                <div class="content-card reveal">
-                    <p>ok so you are here from my insta aren't you?</p>
-                    
-                    <p>my name is you read there but my code name is <span class="highlight">TWILIGHT</span> (it sounded very cool so i just picked it nothing more)</p>
-                    
-                    <p>i am a student and doing stuff whatever i feel cool this is one of them although i know no body will read it (because everybody is busy in their problems)</p>
-                </div>
+        <!-- Profile Dots Navigation -->
+        <div class="profile-dots" id="profileDots">
+            <div class="profile-dot active" onclick="changeProfile(0, event)"></div>
+            <div class="profile-dot" onclick="changeProfile(1, event)"></div>
+            <div class="profile-dot" onclick="changeProfile(2, event)"></div>
+            <div class="profile-dot" onclick="changeProfile(3, event)"></div>
+        </div>
 
-                <div class="content-card reveal">
-                    <h2>OK lets start "Who Am I"</h2>
-                </div>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-cyber font-black text-center mt-8 mb-4 px-4">
+            <span class="glitch-text text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400" data-text="WHO AM I?">
+                WHO AM I?
+            </span>
+        </h1>
 
-                <div class="profile-section reveal">
-                    <p style="font-size: 1.3em; margin-bottom: 20px;">I am twilight</p>
-                    <div class="profile-container">
-                        <div class="orbit-ring"></div>
-                        <div class="orbit-ring"></div>
-                        <div class="profile-slideshow" id="profileSlideshow">
-                            <div class="profile-slide active">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg" alt="Twilight 1">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20251006_071930678_HDR.jpg" alt="Twilight 2">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/Screenshot_20250401-201427-602.png" alt="Twilight 3">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20241126_123705_280.jpg" alt="Twilight 4">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-indicators">
-                        <span class="indicator active" onclick="goToSlide(0)"></span>
-                        <span class="indicator" onclick="goToSlide(1)"></span>
-                        <span class="indicator" onclick="goToSlide(2)"></span>
-                        <span class="indicator" onclick="goToSlide(3)"></span>
-                    </div>
-                </div>
+        <div class="max-w-2xl text-center space-y-4 px-4">
+            <p class="text-lg md:text-xl text-gray-300" data-key="intro">
+                A student doing whatever feels cool...
+            </p>
+            <p class="text-gray-500 italic text-sm md:text-base" data-key="existence">I know I'm not so handsome or smart but I exist ✌️</p>
+        </div>
 
-                <div class="content-card reveal">
-                    <p>I know i am not so handsome or smart but i exists so we cant do about it ✌️</p>
-                </div>
+        <!-- Easter Egg Input -->
+        <div class="mt-10 md:mt-12 relative group w-full max-w-md px-4">
+            <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
+            <div class="relative bg-black/50 backdrop-blur-xl border border-white/20 rounded-lg p-3 md:p-4 flex gap-2">
+                <input type="text" 
+                       id="easterInput" 
+                       placeholder="Enter secret code..." 
+                       class="bg-transparent border-none outline-none text-cyan-400 placeholder-gray-600 flex-1 font-mono text-sm md:text-base"
+                       onkeypress="if(event.key==='Enter') checkEasterEgg()">
+                <button onclick="checkEasterEgg()" 
+                        class="px-3 md:px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-400 rounded border border-cyan-500/50 transition-all font-bold text-xs md:text-sm touch-feedback whitespace-nowrap">
+                    EXECUTE
+                </button>
+            </div>
+            <p class="text-xs text-gray-600 mt-2 text-center font-mono" data-key="easter_hint">DM me the secret phrase</p>
+        </div>
+    </header>
 
-                <div class="hobby-section reveal">
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/j4qLWvusHSvUcD88c5APoN9eJTguNPcapBxW7IEvsKg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTY4/ODg3ODgzMS9waG90/by8zZC1yZW5kZXIt/YW5pbWF0aW9uLWFu/ZC1pbGx1c3RyYXRp/b24tdGhlLWxhcmdl/c3Qta25vd24tc3Vw/ZXJtYXNzaXZlLWJs/YWNrLWhvbGUtaXRz/LXNjaWVuY2Uud2Vi/cD9hPTEmYj0xJnM9/NjEyeDYxMiZ3PTAm/az0yMCZjPVJzelJa/dy1xVWtUTWJ4V0It/eVF2Z1FWMEVxZ09S/STQ3TUFUZVl6aVhz/S2M9" alt="Space">
-                        <p>i may not intelligent but i love space</p>
-                    </div>
+    <!-- Interests Section -->
+    <section class="py-16 md:py-20 px-4 max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-cyber font-bold text-center mb-12 md:mb-16 text-white">
+            <span class="border-b-2 border-cyan-500/50 pb-2" data-key="interests">INTERESTS</span>
+        </h2>
 
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/wUY6g_3u5jjP4_RCDU8wT8MiUeDtCgsg67iVap3J84I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE3/MjI0OTMwNC9waG90/by9jcHUtYW5kLWNv/bXB1dGVyLWNoaXAt/Y29uY2VwdC1haS10/ZWNobm9sb2d5Lmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1P/eWQ2cXYwNFE3NFpw/S0hYbUwtYVBneXUt/aVpKSmhCd0RsZnFJ/TDVELTNNPQ" alt="Tech">
-                        <p>i love tech</p>
-                    </div>
-
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/1Zem1JG9j4rTqtM5HpbtvJ50uYCdd-7c4Zq6yoYM4N8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmlt/Z2ZsaXAuY29tLzQv/M3UwNGg1LmpwZw" alt="Cats">
-                        <p>and I love cats</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            
+            <!-- Space Card -->
+            <div class="tilt-card rounded-2xl overflow-hidden touch-feedback scroll-reveal">
+                <div class="h-48 md:h-56 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&q=80" 
+                         alt="Space"
+                         class="w-full h-full object-cover transform hover:scale-110 transition duration-700"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <h3 class="text-2xl font-cyber font-bold text-cyan-400" data-key="space_title">SPACE</h3>
                     </div>
                 </div>
-
-                <div class="easter-egg reveal">
-                    <p>and just dm me <span class="highlight">"twilight is dead"</span> its a easter egg</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;">(and it will tell me that you visited my web html)</p>
-                </div>
-
-                <div class="audio-section reveal">
-                    <h2>wait these two are my fav songs</h2>
-                    
-                    <div class="audio-player">
-                        <p><strong>🎵 For The Win (aleemark)</strong></p>
-                        <audio controls>
-                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/2_5195378765512872307.mp3" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
+                <div class="p-5 md:p-6">
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed" data-key="space_desc">Lost in the cosmos. The final frontier calls.</p>
+                    <div class="mt-4 flex gap-2 flex-wrap">
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/30">#cosmos</span>
+                        <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded border border-cyan-500/30">#void</span>
                     </div>
-
-                    <div class="audio-player">
-                        <p><strong>🎵 Flowers (Kaká)</strong></p>
-                        <audio controls>
-                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/Flowers%20%20%20Kaká%20(1).m4a" type="audio/mp4">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-
-                <div class="content-card reveal">
-                    <p style="text-align: center; font-size: 1.2em;">Thats all i guess</p>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG-20260204-WA0019-removebg-preview.png" alt="That's all" style="max-width: 400px; width: 100%; filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.5));">
-                    </div>
-                </div>
-
-                <div class="footer reveal">
-                    <h2>ok BYEEE!!!!!!!!!!!</h2>
-                    <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/ezgif-7477ace70421774b.gif" alt="Bye">
                 </div>
             </div>
 
-            <!-- Hindi Content -->
-            <div id="hi-content" style="display: none;">
-                <div class="content-card reveal">
-                    <p>ठीक है तो तुम मेरे इंस्टा से यहां आए हो न?</p>
-                    
-                    <p>मेरा नाम तुमने वहां पढ़ा होगा लेकिन मेरा कोड नाम <span class="highlight">TWILIGHT</span> है (यह बहुत कूल लग रहा था इसलिए मैंने इसे चुन लिया और कुछ नहीं)</p>
-                    
-                    <p>मैं एक छात्र हूं और जो भी मुझे अच्छा लगता है वो करता हूं यह उनमें से एक है हालांकि मुझे पता है कि कोई भी इसे नहीं पढ़ेगा (क्योंकि सभी अपनी समस्याओं में व्यस्त हैं)</p>
-                </div>
-
-                <div class="content-card reveal">
-                    <h2>ठीक है चलो शुरू करते हैं "मैं कौन हूं"</h2>
-                </div>
-
-                <div class="profile-section reveal">
-                    <p style="font-size: 1.3em; margin-bottom: 20px;">मैं twilight हूं</p>
-                    <div class="profile-container">
-                        <div class="orbit-ring"></div>
-                        <div class="orbit-ring"></div>
-                        <div class="profile-slideshow" id="profileSlideshowHi">
-                            <div class="profile-slide active">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg" alt="Twilight 1">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20251006_071930678_HDR.jpg" alt="Twilight 2">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/Screenshot_20250401-201427-602.png" alt="Twilight 3">
-                            </div>
-                            <div class="profile-slide">
-                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20241126_123705_280.jpg" alt="Twilight 4">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-indicators">
-                        <span class="indicator active" onclick="goToSlide(0)"></span>
-                        <span class="indicator" onclick="goToSlide(1)"></span>
-                        <span class="indicator" onclick="goToSlide(2)"></span>
-                        <span class="indicator" onclick="goToSlide(3)"></span>
+            <!-- Tech Card -->
+            <div class="tilt-card rounded-2xl overflow-hidden touch-feedback scroll-reveal">
+                <div class="h-48 md:h-56 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" 
+                         alt="Tech"
+                         class="w-full h-full object-cover transform hover:scale-110 transition duration-700"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <h3 class="text-2xl font-cyber font-bold text-purple-400" data-key="tech_title">TECH</h3>
                     </div>
                 </div>
-
-                <div class="content-card reveal">
-                    <p>मुझे पता है कि मैं इतना सुंदर या स्मार्ट नहीं हूं लेकिन मैं अस्तित्व में हूं तो हम इसके बारे में कुछ नहीं कर सकते ✌️</p>
-                </div>
-
-                <div class="hobby-section reveal">
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/j4qLWvusHSvUcD88c5APoN9eJTguNPcapBxW7IEvsKg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTY4/ODg3ODgzMS9waG90/by8zZC1yZW5kZXIt/YW5pbWF0aW9uLWFu/ZC1pbGx1c3RyYXRp/b24tdGhlLWxhcmdl/c3Qta25vd24tc3Vw/ZXJtYXNzaXZlLWJs/YWNrLWhvbGUtaXRz/LXNjaWVuY2Uud2Vi/cD9hPTEmYj0xJnM9/NjEyeDYxMiZ3PTAm/az0yMCZjPVJzelJa/dy1xVWtUTWJ4V0It/eVF2Z1FWMEVxZ09S/STQ3TUFUZVl6aVhz/S2M9" alt="Space">
-                        <p>मैं शायद बुद्धिमान नहीं हूं लेकिन मुझे अंतरिक्ष पसंद है</p>
-                    </div>
-
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/wUY6g_3u5jjP4_RCDU8wT8MiUeDtCgsg67iVap3J84I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE3/MjI0OTMwNC9waG90/by9jcHUtYW5kLWNv/bXB1dGVyLWNoaXAt/Y29uY2VwdC1haS10/ZWNobm9sb2d5Lmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1P/eWQ2cXYwNFE3NFpw/S0hYbUwtYVBneXUt/aVpKSmhCd0RsZnFJ/TDVELTNNPQ" alt="Tech">
-                        <p>मुझे टेक पसंद है</p>
-                    </div>
-
-                    <div class="hobby-card">
-                        <img src="https://imgs.search.brave.com/1Zem1JG9j4rTqtM5HpbtvJ50uYCdd-7c4Zq6yoYM4N8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmlt/Z2ZsaXAuY29tLzQv/M3UwNGg1LmpwZw" alt="Cats">
-                        <p>और मुझे बिल्लियाँ पसंद हैं</p>
+                <div class="p-5 md:p-6">
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed" data-key="tech_desc">Building the future, one line at a time.</p>
+                    <div class="mt-4 flex gap-2 flex-wrap">
+                        <span class="px-2 py-1 bg-purple-500/10 text-purple-400 text-xs rounded border border-purple-500/30">#code</span>
+                        <span class="px-2 py-1 bg-purple-500/10 text-purple-400 text-xs rounded border border-purple-500/30">#ai</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="easter-egg reveal">
-                    <p>और बस मुझे डीएम करो <span class="highlight">"twilight is dead"</span> यह एक ईस्टर एग है</p>
-                    <p style="margin-top: 10px; font-size: 0.9em;">(और यह मुझे बताएगा कि आपने मेरा वेब HTML देखा)</p>
-                </div>
-
-                <div class="audio-section reveal">
-                    <h2>रुको ये दो मेरे पसंदीदा गाने हैं</h2>
-                    
-                    <div class="audio-player">
-                        <p><strong>🎵 For The Win (aleemark)</strong></p>
-                        <audio controls>
-                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/2_5195378765512872307.mp3" type="audio/mpeg">
-                            आपका ब्राउज़र ऑडियो तत्व का समर्थन नहीं करता है।
-                        </audio>
-                    </div>
-
-                    <div class="audio-player">
-                        <p><strong>🎵 Flowers (Kaká)</strong></p>
-                        <audio controls>
-                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/Flowers%20%20%20Kaká%20(1).m4a" type="audio/mp4">
-                            आपका ब्राउज़र ऑडियो तत्व का समर्थन नहीं करता है।
-                        </audio>
+            <!-- Cats Card -->
+            <div class="tilt-card rounded-2xl overflow-hidden touch-feedback scroll-reveal">
+                <div class="h-48 md:h-56 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&q=80" 
+                         alt="Cats"
+                         class="w-full h-full object-cover transform hover:scale-110 transition duration-700"
+                         loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <h3 class="text-2xl font-cyber font-bold text-pink-400" data-key="cats_title">CATS</h3>
                     </div>
                 </div>
-
-                <div class="content-card reveal">
-                    <p style="text-align: center; font-size: 1.2em;">बस इतना ही लगता है</p>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG-20260204-WA0019-removebg-preview.png" alt="That's all" style="max-width: 400px; width: 100%; filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.5));">
+                <div class="p-5 md:p-6">
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed" data-key="cats_desc">Feline overlords and digital servants.</p>
+                    <div class="mt-4 flex gap-2 flex-wrap">
+                        <span class="px-2 py-1 bg-pink-500/10 text-pink-400 text-xs rounded border border-pink-500/30">#meow</span>
+                        <span class="px-2 py-1 bg-pink-500/10 text-pink-400 text-xs rounded border border-pink-500/30">#boss</span>
                     </div>
-                </div>
-
-                <div class="footer reveal">
-                    <h2>ठीक है बाय!!!!!!!!!!!</h2>
-                    <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/ezgif-7477ace70421774b.gif" alt="Bye">
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Music Section -->
+    <section class="py-16 md:py-20 px-4 bg-black/60 backdrop-blur-xl border-y border-white/5">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-cyber font-bold text-center mb-10 md:mb-12 text-white flex items-center justify-center gap-4">
+                <span class="w-8 md:w-12 h-[2px] bg-gradient-to-r from-transparent to-cyan-500"></span>
+                <span data-key="playlist">PLAYLIST</span>
+                <span class="w-8 md:w-12 h-[2px] bg-gradient-to-l from-transparent to-purple-500"></span>
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- Track 1 -->
+                <div class="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-2xl p-4 transition-all duration-300 touch-feedback scroll-reveal">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <button onclick="toggleTrack('track1', this)" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-cyan-500/20 hover:bg-cyan-500 text-cyan-400 hover:text-black flex items-center justify-center transition-all flex-shrink-0">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
+                            <svg class="w-4 h-4 md:w-5 md:h-5 pause-icon hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"/></svg>
+                        </button>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-base md:text-lg font-bold text-white truncate">For The Win</h3>
+                            <p class="text-cyan-400 text-xs md:text-sm">Aleemark</p>
+                        </div>
+
+                        <div class="visualizer-container hidden md:flex" id="viz1">
+                            <!-- Bars generated by JS -->
+                        </div>
+
+                        <div class="w-16 md:w-32 h-1 bg-gray-700 rounded-full overflow-hidden flex-shrink-0">
+                            <div class="progress-bar h-full bg-gradient-to-r from-cyan-500 to-purple-500 w-0 transition-all" id="prog1"></div>
+                        </div>
+                        
+                        <span class="text-xs font-mono text-gray-500 w-10 md:w-12 text-right flex-shrink-0" id="time1">0:00</span>
+                    </div>
+                    <audio id="track1" src="https://github.com/Twilight-Net/test/raw/refs/heads/main/2_5195378765512872307.mp3" preload="none"></audio>
+                </div>
+
+                <!-- Track 2 -->
+                <div class="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/50 rounded-2xl p-4 transition-all duration-300 touch-feedback scroll-reveal">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <button onclick="toggleTrack('track2', this)" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-purple-500/20 hover:bg-purple-500 text-purple-400 hover:text-black flex items-center justify-center transition-all flex-shrink-0">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 play-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
+                            <svg class="w-4 h-4 md:w-5 md:h-5 pause-icon hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"/></svg>
+                        </button>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-base md:text-lg font-bold text-white truncate">Flowers</h3>
+                            <p class="text-purple-400 text-xs md:text-sm">Kaká</p>
+                        </div>
+
+                        <div class="visualizer-container hidden md:flex" id="viz2"></div>
+
+                        <div class="w-16 md:w-32 h-1 bg-gray-700 rounded-full overflow-hidden flex-shrink-0">
+                            <div class="progress-bar h-full bg-gradient-to-r from-purple-500 to-pink-500 w-0 transition-all" id="prog2"></div>
+                        </div>
+                        
+                        <span class="text-xs font-mono text-gray-500 w-10 md:w-12 text-right flex-shrink-0" id="time2">0:00</span>
+                    </div>
+                    <audio id="track2" src="https://github.com/Twilight-Net/test/raw/refs/heads/main/Flowers%20%20%20Kaká%20(1).m4a" preload="none"></audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 md:py-20 flex flex-col items-center justify-center relative overflow-hidden px-4">
+        <div class="absolute inset-0 bg-gradient-to-t from-cyan-900/10 to-transparent"></div>
+        
+        <div class="relative mb-6 md:mb-8">
+            <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/ezgif-7477ace70421774b.gif" 
+                 class="w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-[0_0_30px_rgba(0,243,255,0.3)] float-anim" 
+                 style="animation-delay: 1s;"
+                 alt="Bye"
+                 loading="lazy">
+        </div>
+        
+        <h2 class="text-4xl md:text-6xl lg:text-8xl font-cyber font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-4 glitch-text text-center" data-text="BYEEE!!!">
+            BYEEE!!!
+        </h2>
+        
+        <p class="text-gray-600 text-xs md:text-sm tracking-widest uppercase text-center" data-key="footer_note">End of transmission</p>
+    </footer>
+
+    <!-- Batman Easter Egg Modal -->
+    <div class="batman-modal" id="batmanModal" onclick="closeBatman()">
+        <div class="batman-text font-cyber mb-6 md:mb-8">I AM BATMAN</div>
+        <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG-20260204-WA0019-removebg-preview.png" 
+             class="w-48 h-48 md:w-64 md:h-64 object-contain mb-6 md:mb-8 animate-bounce drop-shadow-[0_0_50px_rgba(255,215,0,0.5)]" 
+             alt="Batman">
+        <button onclick="closeBatman()" class="px-6 py-3 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10 rounded uppercase tracking-widest transition-all text-sm md:text-base touch-feedback">
+            [ Return to Reality ]
+        </button>
     </div>
 
     <script>
-        // Matrix code rain effect
-        function createMatrixRain() {
-            const container = document.getElementById('matrixBg');
-            const codeChars = '01';
-            const symbols = 'TWILIGHT{}[]<>/;:()=+-*@#$%&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const streamCount = 40;
+        // --- Profile Images Array ---
+        const profiles = [
+            "https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg",
+            "https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20251006_071930678_HDR.jpg",
+            "https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/Screenshot_20250401-201427-602.png",
+            "https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20241126_123705_280.jpg"
+        ];
+
+        let currentProfile = 0;
+
+        function changeProfile(index, event) {
+            if (event) event.stopPropagation();
             
-            for (let i = 0; i < streamCount; i++) {
-                const stream = document.createElement('div');
-                stream.className = 'code-stream';
-                stream.style.left = Math.random() * 100 + '%';
-                stream.style.animationDuration = (Math.random() * 10 + 8) + 's';
-                stream.style.animationDelay = Math.random() * 5 + 's';
-                
-                // Create random code text
-                let codeText = '';
-                const lines = Math.floor(Math.random() * 15) + 10;
-                for (let j = 0; j < lines; j++) {
-                    const lineLength = Math.floor(Math.random() * 40) + 20;
-                    for (let k = 0; k < lineLength; k++) {
-                        codeText += symbols.charAt(Math.floor(Math.random() * symbols.length));
-                    }
-                    codeText += '\n';
-                }
-                
-                stream.textContent = codeText;
-                container.appendChild(stream);
-            }
-        }
-
-        // Binary particles
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 80;
-            const binaryChars = ['0', '1', '01', '10', '001', '101', '010', '110'];
+            currentProfile = index;
+            const img = document.getElementById('profileImage');
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = binaryChars[Math.floor(Math.random() * binaryChars.length)];
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // 3D Tilt effect for profile photos
-        function init3DTilt() {
-            const profileContainer = document.querySelector('.profile-container');
-            const profileSlideshow = document.querySelector('.profile-slideshow');
+            // Fade out
+            img.style.opacity = '0';
+            img.style.transform = 'scale(0.9)';
             
-            if (!profileContainer || !profileSlideshow) return;
-
-            profileContainer.addEventListener('mousemove', (e) => {
-                const rect = profileContainer.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -15;
-                const rotateY = ((x - centerX) / centerX) * 15;
-                
-                profileSlideshow.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-            });
-            
-            profileContainer.addEventListener('mouseleave', () => {
-                profileSlideshow.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-
-            // Click to flip effect
-            profileContainer.addEventListener('click', () => {
-                profileSlideshow.style.transform = 'rotateY(180deg)';
-                setTimeout(() => {
-                    nextSlide();
-                    profileSlideshow.style.transform = 'rotateY(0deg)';
-                }, 300);
-            });
-        }
-
-        // Profile slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.profile-slide');
-        const indicators = document.querySelectorAll('.indicator');
-        
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            indicators.forEach(ind => ind.classList.remove('active'));
-            
-            currentSlide = (n + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-            indicators[currentSlide].classList.add('active');
-        }
-
-        function nextSlide() {
-            showSlide(currentSlide + 1);
-        }
-
-        function goToSlide(n) {
-            showSlide(n);
-        }
-
-        // Auto-advance slides
-        setInterval(nextSlide, 5000);
-
-        // Language switcher
-        function switchLanguage(lang) {
-            const enContent = document.getElementById('en-content');
-            const hiContent = document.getElementById('hi-content');
-            const buttons = document.querySelectorAll('.lang-btn');
-
-            if (lang === 'en') {
-                enContent.style.display = 'block';
-                hiContent.style.display = 'none';
-                buttons[0].classList.add('active');
-                buttons[1].classList.remove('active');
-            } else {
-                enContent.style.display = 'none';
-                hiContent.style.display = 'block';
-                buttons[0].classList.remove('active');
-                buttons[1].classList.add('active');
-            }
-            
-            // Re-initialize 3D tilt for Hindi content
             setTimeout(() => {
-                init3DTilt();
-                revealOnScroll();
-            }, 100);
+                img.src = profiles[index];
+                img.onload = () => {
+                    img.classList.remove('img-loading');
+                    img.style.opacity = '1';
+                    img.style.transform = 'scale(1)';
+                };
+            }, 300);
+
+            // Update dots
+            document.querySelectorAll('.profile-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
         }
 
-        // Scroll reveal animation
-        function revealOnScroll() {
-            const reveals = document.querySelectorAll('.reveal');
+        function nextProfile() {
+            currentProfile = (currentProfile + 1) % profiles.length;
+            changeProfile(currentProfile);
+        }
+
+        // --- Translations ---
+        const translations = {
+            en: {
+                intro: "A student doing whatever feels cool...",
+                existence: "I know I'm not so handsome or smart but I exist ✌️",
+                lang_label: "Language",
+                easter_hint: "DM me the secret phrase",
+                interests: "INTERESTS",
+                space_title: "SPACE",
+                space_desc: "Lost in the cosmos. The final frontier calls.",
+                tech_title: "TECH",
+                tech_desc: "Building the future, one line at a time.",
+                cats_title: "CATS",
+                cats_desc: "Feline overlords and digital servants.",
+                playlist: "PLAYLIST",
+                footer_note: "End of transmission"
+            },
+            hi: {
+                intro: "एक छात्र जो जो भी अच्छा लगता है कर रहा है...",
+                existence: "पता है मैं इतना हैंडसम या स्मार्ट नहीं हूं लेकिन मैं मौजूद हूं ✌️",
+                lang_label: "भाषा",
+                easter_hint: "मुझे गुप्त वाक्य भेजें",
+                interests: "रुचियाँ",
+                space_title: "अंतरिक्ष",
+                space_desc: "ब्रह्मांड में खोया हुआ। अंतिम सीमा बुला रही है।",
+                tech_title: "तकनीक",
+                tech_desc: "एक समय में एक पंक्ति के साथ भविष्य का निर्माण।",
+                cats_title: "बिल्लियाँ",
+                cats_desc: "बिल्ली के अधिपति और डिजिटल सेवक।",
+                playlist: "प्लेलिस्ट",
+                footer_note: "संचरण समाप्त"
+            }
+        };
+
+        let currentLang = 'en';
+        
+        function toggleLanguage() {
+            const switchEl = document.getElementById('langSwitch');
+            const sliderEl = document.getElementById('langSlider');
             
-            reveals.forEach(element => {
-                const windowHeight = window.innerHeight;
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < windowHeight - elementVisible) {
-                    element.classList.add('active');
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            
+            if (currentLang === 'hi') {
+                switchEl.classList.add('hindi');
+                sliderEl.textContent = 'हि';
+            } else {
+                switchEl.classList.remove('hindi');
+                sliderEl.textContent = 'EN';
+            }
+            
+            // Update all text elements with smooth transition
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[currentLang][key]) {
+                    el.style.transition = 'opacity 0.2s';
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.textContent = translations[currentLang][key];
+                        el.style.opacity = '1';
+                    }, 200);
                 }
             });
         }
 
-        // Initialize everything
-        window.addEventListener('DOMContentLoaded', () => {
-            createMatrixRain();
-            createParticles();
-            init3DTilt();
-            revealOnScroll();
+        // --- Easter Egg ---
+        function checkEasterEgg() {
+            const input = document.getElementById('easterInput');
+            const value = input.value.toLowerCase().trim();
+            
+            if (value === 'twilight is dead') {
+                document.getElementById('batmanModal').classList.add('active');
+                input.value = '';
+                
+                // Notification
+                const notif = document.createElement('div');
+                notif.className = 'fixed top-20 right-4 bg-green-500/20 border border-green-500 text-green-400 px-4 py-2 rounded z-50 animate-bounce text-sm';
+                notif.textContent = currentLang === 'en' ? 'Visitor detected! 🦇' : 'आगंतुक पता चला! 🦇';
+                document.body.appendChild(notif);
+                setTimeout(() => notif.remove(), 3000);
+            } else {
+                input.classList.add('border-red-500');
+                input.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    input.classList.remove('border-red-500');
+                    input.style.animation = '';
+                }, 500);
+            }
+        }
+
+        function closeBatman() {
+            document.getElementById('batmanModal').classList.remove('active');
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // --- Audio Player with Visualizer ---
+        const visualizers = {};
+        
+        // Create visualizer bars
+        [1, 2].forEach(num => {
+            const container = document.getElementById(`viz${num}`);
+            if (container) {
+                for (let i = 0; i < 8; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'viz-bar';
+                    bar.style.animationDelay = `${i * 0.1}s`;
+                    bar.style.animationPlayState = 'paused';
+                    container.appendChild(bar);
+                }
+                visualizers[`track${num}`] = container;
+            }
         });
 
-        window.addEventListener('scroll', revealOnScroll);
+        function toggleTrack(trackId, btn) {
+            const audio = document.getElementById(trackId);
+            const playIcon = btn.querySelector('.play-icon');
+            const pauseIcon = btn.querySelector('.pause-icon');
+            const viz = visualizers[trackId];
+            const prog = document.getElementById(trackId.replace('track', 'prog'));
+            const time = document.getElementById(trackId.replace('track', 'time'));
+            
+            // Stop others
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== trackId) {
+                    a.pause();
+                    a.currentTime = 0;
+                    const otherBtn = document.querySelector(`button[onclick="toggleTrack('${a.id}', this)"]`);
+                    if (otherBtn) {
+                        otherBtn.querySelector('.play-icon').classList.remove('hidden');
+                        otherBtn.querySelector('.pause-icon').classList.add('hidden');
+                    }
+                    const otherViz = visualizers[a.id];
+                    if (otherViz) {
+                        otherViz.querySelectorAll('.viz-bar').forEach(b => b.style.animationPlayState = 'paused');
+                    }
+                }
+            });
+            
+            if (audio.paused) {
+                audio.play().catch(e => console.log('Audio play failed:', e));
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                if (viz) {
+                    viz.querySelectorAll('.viz-bar').forEach(b => b.style.animationPlayState = 'running');
+                }
+                
+                audio.ontimeupdate = () => {
+                    if (audio.duration) {
+                        const percent = (audio.currentTime / audio.duration) * 100;
+                        prog.style.width = percent + '%';
+                        const mins = Math.floor(audio.currentTime / 60);
+                        const secs = Math.floor(audio.currentTime % 60);
+                        time.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                    }
+                };
+                
+                audio.onended = () => {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    prog.style.width = '0%';
+                    if (viz) {
+                        viz.querySelectorAll('.viz-bar').forEach(b => b.style.animationPlayState = 'paused');
+                    }
+                };
+            } else {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                if (viz) {
+                    viz.querySelectorAll('.viz-bar').forEach(b => b.style.animationPlayState = 'paused');
+                }
+            }
+        }
+
+        // --- Scroll Reveal Animation ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach((el) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // --- Touch handling for mobile ---
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, {passive: true});
+
+        document.addEventListener('touchmove', (e) => {
+            // Prevent pull-to-refresh on mobile
+            if (document.scrollingElement.scrollTop === 0 && e.touches[0].clientY > touchStartY) {
+                e.preventDefault();
+            }
+        }, {passive: false});
+
+        // --- Preload images ---
+        profiles.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
     </script>
 </body>
 </html>
+
