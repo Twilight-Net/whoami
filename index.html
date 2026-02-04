@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWILIGHT v2.0 - About Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Matrix-style code rain background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .code-stream {
+            position: absolute;
+            top: -100%;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            white-space: nowrap;
+            animation: fall linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -100%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* Binary particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            color: rgba(102, 126, 234, 0.4);
+            font-size: 12px;
+            animation: float-binary 20s infinite;
+        }
+
+        @keyframes float-binary {
+            0%, 100% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-150vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Glitch effect for header */
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
+            }
+            25% {
+                text-shadow: -2px 2px #ff00ff, 2px -2px #00ffff;
+            }
+            50% {
+                text-shadow: 2px -2px #ff00ff, -2px 2px #00ffff;
+            }
+            75% {
+                text-shadow: -2px -2px #ff00ff, 2px 2px #00ffff;
+            }
+            100% {
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #667eea;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+        }
+
+        h1 {
+            color: #ffd700;
+            font-size: 4em;
+            margin: 20px 0;
+            animation: glitch 3s infinite;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .version {
+            color: #667eea;
+            font-size: 1.2em;
+            letter-spacing: 3px;
+        }
+
+        /* Profile Photo Slideshow with 3D interactive effects */
+        .profile-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .profile-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 30px auto;
+            perspective: 1500px;
+            cursor: pointer;
+        }
+
+        .profile-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .profile-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 0.3s ease;
+            border-radius: 20px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .profile-slide.active {
+            opacity: 1;
+        }
+
+        .profile-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 3px solid #667eea;
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.6),
+                        0 0 100px rgba(118, 75, 162, 0.4),
+                        inset 0 0 50px rgba(102, 126, 234, 0.2);
+            animation: pulse-border 2s infinite;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .profile-container:hover .profile-slide img {
+            transform: scale(1.05);
+            filter: brightness(1.2) saturate(1.2);
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                box-shadow: 0 0 50px rgba(102, 126, 234, 0.6),
+                            0 0 100px rgba(118, 75, 162, 0.4),
+                            inset 0 0 50px rgba(102, 126, 234, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 70px rgba(102, 126, 234, 0.8),
+                            0 0 120px rgba(118, 75, 162, 0.6),
+                            inset 0 0 70px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        /* Hologram scan effect */
+        .profile-slide::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent, rgba(102, 126, 234, 0.3), transparent);
+            animation: scan 3s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes scan {
+            0% {
+                top: -100%;
+            }
+            50% {
+                top: 100%;
+            }
+            100% {
+                top: -100%;
+            }
+        }
+
+        /* Orbit rings around profile */
+        .orbit-ring {
+            position: absolute;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .orbit-ring:nth-child(1) {
+            width: 420px;
+            height: 420px;
+            top: -10px;
+            left: -10px;
+        }
+
+        .orbit-ring:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            top: -25px;
+            left: -25px;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Slide indicators */
+        .slide-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background: #667eea;
+            box-shadow: 0 0 10px #667eea;
+            transform: scale(1.3);
+        }
+
+        /* Content cards with neon effect */
+        .content-card {
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        .content-card:hover::before {
+            opacity: 0.5;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        p {
+            line-height: 1.8;
+            margin: 15px 0;
+            font-size: 1.1em;
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        h2 {
+            color: #ff6b6b;
+            margin: 20px 0 10px;
+            font-size: 2em;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Hobby cards with 3D effect */
+        .hobby-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .hobby-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.5s;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hobby-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+
+        .hobby-card:hover::after {
+            left: 100%;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5);
+            border-color: #667eea;
+        }
+
+        .hobby-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            filter: brightness(0.8);
+            transition: all 0.3s;
+        }
+
+        .hobby-card:hover img {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        /* Easter egg with matrix effect */
+        .easter-egg {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 107, 0.1));
+            border: 2px solid #ffd700;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .easter-egg::before {
+            content: '< EASTER EGG >';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a0a0a;
+            padding: 5px 20px;
+            font-size: 0.8em;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+        }
+
+        /* Audio section with visualizer effect */
+        .audio-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .audio-player {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            filter: hue-rotate(200deg);
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin: 50px 0 30px;
+        }
+
+        .footer img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .profile-container {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .orbit-ring:nth-child(1) {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .orbit-ring:nth-child(2) {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .lang-switch {
+                position: relative;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix code rain background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <!-- Binary particles background -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="switchLanguage('hi')">हिंदी</button>
+            </div>
+            <h1>TWILIGHT</h1>
+            <div class="version">[ v2.0 ]</div>
+        </div>
+
+        <div id="content">
+            <!-- English Content -->
+            <div id="en-content">
+                <div class="content-card reveal">
+                    <p>ok so you are here from my insta aren't you?</p>
+                    
+                    <p>my name is you read there but my code name is <span class="highlight">TWILIGHT</span> (it sounded very cool so i just picked it nothing more)</p>
+                    
+                    <p>i am a student and doing stuff whatever i feel cool this is one of them although i know no body will read it (because everybody is busy in their problems)</p>
+                </div>
+
+                <div class="content-card reveal">
+                    <h2>OK lets start "Who Am I"</h2>
+                </div>
+
+                <div class="profile-section reveal">
+                    <p style="font-size: 1.3em; margin-bottom: 20px;">I am twilight</p>
+                    <div class="profile-container">
+                        <div class="orbit-ring"></div>
+                        <div class="orbit-ring"></div>
+                        <div class="profile-slideshow" id="profileSlideshow">
+                            <div class="profile-slide active">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg" alt="Twilight 1">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20251006_071930678_HDR.jpg" alt="Twilight 2">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/Screenshot_20250401-201427-602.png" alt="Twilight 3">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20241126_123705_280.jpg" alt="Twilight 4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-indicators">
+                        <span class="indicator active" onclick="goToSlide(0)"></span>
+                        <span class="indicator" onclick="goToSlide(1)"></span>
+                        <span class="indicator" onclick="goToSlide(2)"></span>
+                        <span class="indicator" onclick="goToSlide(3)"></span>
+                    </div>
+                </div>
+
+                <div class="content-card reveal">
+                    <p>I know i am not so handsome or smart but i exists so we cant do about it ✌️</p>
+                </div>
+
+                <div class="hobby-section reveal">
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/j4qLWvusHSvUcD88c5APoN9eJTguNPcapBxW7IEvsKg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTY4/ODg3ODgzMS9waG90/by8zZC1yZW5kZXIt/YW5pbWF0aW9uLWFu/ZC1pbGx1c3RyYXRp/b24tdGhlLWxhcmdl/c3Qta25vd24tc3Vw/ZXJtYXNzaXZlLWJs/YWNrLWhvbGUtaXRz/LXNjaWVuY2Uud2Vi/cD9hPTEmYj0xJnM9/NjEyeDYxMiZ3PTAm/az0yMCZjPVJzelJa/dy1xVWtUTWJ4V0It/eVF2Z1FWMEVxZ09S/STQ3TUFUZVl6aVhz/S2M9" alt="Space">
+                        <p>i may not intelligent but i love space</p>
+                    </div>
+
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/wUY6g_3u5jjP4_RCDU8wT8MiUeDtCgsg67iVap3J84I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE3/MjI0OTMwNC9waG90/by9jcHUtYW5kLWNv/bXB1dGVyLWNoaXAt/Y29uY2VwdC1haS10/ZWNobm9sb2d5Lmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1P/eWQ2cXYwNFE3NFpw/S0hYbUwtYVBneXUt/aVpKSmhCd0RsZnFJ/TDVELTNNPQ" alt="Tech">
+                        <p>i love tech</p>
+                    </div>
+
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/1Zem1JG9j4rTqtM5HpbtvJ50uYCdd-7c4Zq6yoYM4N8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmlt/Z2ZsaXAuY29tLzQv/M3UwNGg1LmpwZw" alt="Cats">
+                        <p>and I love cats</p>
+                    </div>
+                </div>
+
+                <div class="easter-egg reveal">
+                    <p>and just dm me <span class="highlight">"twilight is dead"</span> its a easter egg</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">(and it will tell me that you visited my web html)</p>
+                </div>
+
+                <div class="audio-section reveal">
+                    <h2>wait these two are my fav songs</h2>
+                    
+                    <div class="audio-player">
+                        <p><strong>🎵 For The Win (aleemark)</strong></p>
+                        <audio controls>
+                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/2_5195378765512872307.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+
+                    <div class="audio-player">
+                        <p><strong>🎵 Flowers (Kaká)</strong></p>
+                        <audio controls>
+                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/Flowers%20%20%20Kaká%20(1).m4a" type="audio/mp4">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="content-card reveal">
+                    <p style="text-align: center; font-size: 1.2em;">Thats all i guess</p>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG-20260204-WA0019-removebg-preview.png" alt="That's all" style="max-width: 400px; width: 100%; filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.5));">
+                    </div>
+                </div>
+
+                <div class="footer reveal">
+                    <h2>ok BYEEE!!!!!!!!!!!</h2>
+                    <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/ezgif-7477ace70421774b.gif" alt="Bye">
+                </div>
+            </div>
+
+            <!-- Hindi Content -->
+            <div id="hi-content" style="display: none;">
+                <div class="content-card reveal">
+                    <p>ठीक है तो तुम मेरे इंस्टा से यहां आए हो न?</p>
+                    
+                    <p>मेरा नाम तुमने वहां पढ़ा होगा लेकिन मेरा कोड नाम <span class="highlight">TWILIGHT</span> है (यह बहुत कूल लग रहा था इसलिए मैंने इसे चुन लिया और कुछ नहीं)</p>
+                    
+                    <p>मैं एक छात्र हूं और जो भी मुझे अच्छा लगता है वो करता हूं यह उनमें से एक है हालांकि मुझे पता है कि कोई भी इसे नहीं पढ़ेगा (क्योंकि सभी अपनी समस्याओं में व्यस्त हैं)</p>
+                </div>
+
+                <div class="content-card reveal">
+                    <h2>ठीक है चलो शुरू करते हैं "मैं कौन हूं"</h2>
+                </div>
+
+                <div class="profile-section reveal">
+                    <p style="font-size: 1.3em; margin-bottom: 20px;">मैं twilight हूं</p>
+                    <div class="profile-container">
+                        <div class="orbit-ring"></div>
+                        <div class="orbit-ring"></div>
+                        <div class="profile-slideshow" id="profileSlideshowHi">
+                            <div class="profile-slide active">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/1760528174280313921020742361521.jpg" alt="Twilight 1">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20251006_071930678_HDR.jpg" alt="Twilight 2">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/Screenshot_20250401-201427-602.png" alt="Twilight 3">
+                            </div>
+                            <div class="profile-slide">
+                                <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG_20241126_123705_280.jpg" alt="Twilight 4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-indicators">
+                        <span class="indicator active" onclick="goToSlide(0)"></span>
+                        <span class="indicator" onclick="goToSlide(1)"></span>
+                        <span class="indicator" onclick="goToSlide(2)"></span>
+                        <span class="indicator" onclick="goToSlide(3)"></span>
+                    </div>
+                </div>
+
+                <div class="content-card reveal">
+                    <p>मुझे पता है कि मैं इतना सुंदर या स्मार्ट नहीं हूं लेकिन मैं अस्तित्व में हूं तो हम इसके बारे में कुछ नहीं कर सकते ✌️</p>
+                </div>
+
+                <div class="hobby-section reveal">
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/j4qLWvusHSvUcD88c5APoN9eJTguNPcapBxW7IEvsKg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTY4/ODg3ODgzMS9waG90/by8zZC1yZW5kZXIt/YW5pbWF0aW9uLWFu/ZC1pbGx1c3RyYXRp/b24tdGhlLWxhcmdl/c3Qta25vd24tc3Vw/ZXJtYXNzaXZlLWJs/YWNrLWhvbGUtaXRz/LXNjaWVuY2Uud2Vi/cD9hPTEmYj0xJnM9/NjEyeDYxMiZ3PTAm/az0yMCZjPVJzelJa/dy1xVWtUTWJ4V0It/eVF2Z1FWMEVxZ09S/STQ3TUFUZVl6aVhz/S2M9" alt="Space">
+                        <p>मैं शायद बुद्धिमान नहीं हूं लेकिन मुझे अंतरिक्ष पसंद है</p>
+                    </div>
+
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/wUY6g_3u5jjP4_RCDU8wT8MiUeDtCgsg67iVap3J84I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMjE3/MjI0OTMwNC9waG90/by9jcHUtYW5kLWNv/bXB1dGVyLWNoaXAt/Y29uY2VwdC1haS10/ZWNobm9sb2d5Lmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz1P/eWQ2cXYwNFE3NFpw/S0hYbUwtYVBneXUt/aVpKSmhCd0RsZnFJ/TDVELTNNPQ" alt="Tech">
+                        <p>मुझे टेक पसंद है</p>
+                    </div>
+
+                    <div class="hobby-card">
+                        <img src="https://imgs.search.brave.com/1Zem1JG9j4rTqtM5HpbtvJ50uYCdd-7c4Zq6yoYM4N8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmlt/Z2ZsaXAuY29tLzQv/M3UwNGg1LmpwZw" alt="Cats">
+                        <p>और मुझे बिल्लियाँ पसंद हैं</p>
+                    </div>
+                </div>
+
+                <div class="easter-egg reveal">
+                    <p>और बस मुझे डीएम करो <span class="highlight">"twilight is dead"</span> यह एक ईस्टर एग है</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">(और यह मुझे बताएगा कि आपने मेरा वेब HTML देखा)</p>
+                </div>
+
+                <div class="audio-section reveal">
+                    <h2>रुको ये दो मेरे पसंदीदा गाने हैं</h2>
+                    
+                    <div class="audio-player">
+                        <p><strong>🎵 For The Win (aleemark)</strong></p>
+                        <audio controls>
+                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/2_5195378765512872307.mp3" type="audio/mpeg">
+                            आपका ब्राउज़र ऑडियो तत्व का समर्थन नहीं करता है।
+                        </audio>
+                    </div>
+
+                    <div class="audio-player">
+                        <p><strong>🎵 Flowers (Kaká)</strong></p>
+                        <audio controls>
+                            <source src="https://github.com/Twilight-Net/test/raw/refs/heads/main/Flowers%20%20%20Kaká%20(1).m4a" type="audio/mp4">
+                            आपका ब्राउज़र ऑडियो तत्व का समर्थन नहीं करता है।
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="content-card reveal">
+                    <p style="text-align: center; font-size: 1.2em;">बस इतना ही लगता है</p>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/IMG-20260204-WA0019-removebg-preview.png" alt="That's all" style="max-width: 400px; width: 100%; filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.5));">
+                    </div>
+                </div>
+
+                <div class="footer reveal">
+                    <h2>ठीक है बाय!!!!!!!!!!!</h2>
+                    <img src="https://raw.githubusercontent.com/Twilight-Net/test/refs/heads/main/ezgif-7477ace70421774b.gif" alt="Bye">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix code rain effect
+        function createMatrixRain() {
+            const container = document.getElementById('matrixBg');
+            const codeChars = '01';
+            const symbols = 'TWILIGHT{}[]<>/;:()=+-*@#$%&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const streamCount = 40;
+            
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'code-stream';
+                stream.style.left = Math.random() * 100 + '%';
+                stream.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                stream.style.animationDelay = Math.random() * 5 + 's';
+                
+                // Create random code text
+                let codeText = '';
+                const lines = Math.floor(Math.random() * 15) + 10;
+                for (let j = 0; j < lines; j++) {
+                    const lineLength = Math.floor(Math.random() * 40) + 20;
+                    for (let k = 0; k < lineLength; k++) {
+                        codeText += symbols.charAt(Math.floor(Math.random() * symbols.length));
+                    }
+                    codeText += '\n';
+                }
+                
+                stream.textContent = codeText;
+                container.appendChild(stream);
+            }
+        }
+
+        // Binary particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 80;
+            const binaryChars = ['0', '1', '01', '10', '001', '101', '010', '110'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = binaryChars[Math.floor(Math.random() * binaryChars.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 3D Tilt effect for profile photos
+        function init3DTilt() {
+            const profileContainer = document.querySelector('.profile-container');
+            const profileSlideshow = document.querySelector('.profile-slideshow');
+            
+            if (!profileContainer || !profileSlideshow) return;
+
+            profileContainer.addEventListener('mousemove', (e) => {
+                const rect = profileContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -15;
+                const rotateY = ((x - centerX) / centerX) * 15;
+                
+                profileSlideshow.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+            
+            profileContainer.addEventListener('mouseleave', () => {
+                profileSlideshow.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+
+            // Click to flip effect
+            profileContainer.addEventListener('click', () => {
+                profileSlideshow.style.transform = 'rotateY(180deg)';
+                setTimeout(() => {
+                    nextSlide();
+                    profileSlideshow.style.transform = 'rotateY(0deg)';
+                }, 300);
+            });
+        }
+
+        // Profile slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.profile-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(ind => ind.classList.remove('active'));
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        // Auto-advance slides
+        setInterval(nextSlide, 5000);
+
+        // Language switcher
+        function switchLanguage(lang) {
+            const enContent = document.getElementById('en-content');
+            const hiContent = document.getElementById('hi-content');
+            const buttons = document.querySelectorAll('.lang-btn');
+
+            if (lang === 'en') {
+                enContent.style.display = 'block';
+                hiContent.style.display = 'none';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                enContent.style.display = 'none';
+                hiContent.style.display = 'block';
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+            }
+            
+            // Re-initialize 3D tilt for Hindi content
+            setTimeout(() => {
+                init3DTilt();
+                revealOnScroll();
+            }, 100);
+        }
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize everything
+        window.addEventListener('DOMContentLoaded', () => {
+            createMatrixRain();
+            createParticles();
+            init3DTilt();
+            revealOnScroll();
+        });
+
+        window.addEventListener('scroll', revealOnScroll);
+    </script>
+</body>
+</html>
